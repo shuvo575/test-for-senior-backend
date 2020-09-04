@@ -15,7 +15,7 @@ class RecordsController extends Controller
         foreach ($obj as $value) {
             $insert_data->push($value);
         }
-
+        \DB::table('records')->truncate();
         foreach ($insert_data->chunk(500) as $chunk) {
             \DB::table('records')->insert($chunk->toArray());
         }
