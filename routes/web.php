@@ -29,3 +29,4 @@ Route::get('filter-js', 'JsController@filter');
 Route::get('map-js', 'JsController@map');
 Route::get('reduce-js', 'JsController@reduce');
 Route::get('animation', 'JsController@animation');
+Route::get('i-m-funny', 'IqController@test');
