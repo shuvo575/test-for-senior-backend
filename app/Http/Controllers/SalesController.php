@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Sales;
-use Illuminate\Http\Request;
+use App\Buyer;
 
 class SalesController extends Controller
 {
@@ -14,7 +13,9 @@ class SalesController extends Controller
      */
     public function index()
     {
-        //
+        $buyers = Buyer::all();
+
+        return view('second-buyer-eloquent', compact('buyers'));
     }
 
 }
