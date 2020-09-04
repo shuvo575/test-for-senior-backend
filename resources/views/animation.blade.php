@@ -1,39 +1,38 @@
 @extends('template')
 
 @section('content')
-<h1>Filter js</h1>
-<small>Open console for live test</small>
-    <pre>
-        var people = ["Katappa", "Bahubali", "Messi", "Tom Cruise"];
-        people.forEach(isKatappaHere);
+<style>
+    .wrapper{
+        border: 2px solid black;
+        height: 95vh;
+        width: 100%;
+    }
+    h1{
+        position: fixed;
+        top: 0;
+        left: 50%;
+    }
+    .box {
+        width: 150px;
+        height: 150px;
+        background: black;
+        position: relative;
+        animation: edgemove 10s infinite;
+    }
 
-        function isKatappaHere(person) {
+@keyframes edgemove {
+  0%   {top: 0px;}
+  25%  {top: 80vh;left: 0}
+  50%  {top: 80vh; left: 93%}
+  75%  {top: 80vh; left: 0}
+  100% {top: 0px;}
+}
 
-            if(person == 'Katappa'){
-                console.log("Katappa is Here");
-            }else{
-                console.log("Katappa is not Here");
-            }
-        }
+    
+</style>
+<div class="wrapper">
+    <h1>Animation</h1>
+    <div class="box"></div>
+</div>
 
-        people.filter(checkAdult);
-
-        // Katappa is Here
-        // 3 Katappa is not Here
-    </pre>
-    <script>
-        var people = ["Katappa", "Bahubali", "Messi", "Tom Cruise"];
-        people.forEach(isKatappaHere);
-
-        function isKatappaHere(person) {
-
-            if(person == 'Katappa'){
-                console.log("Katappa is Here");
-            }else{
-                console.log("Katappa is not Here");
-            }
-        }
-
-        people.filter(checkAdult);
-    </script>
 @endsection 
