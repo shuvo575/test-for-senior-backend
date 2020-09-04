@@ -11,15 +11,14 @@
             <td>Total Eraser Taken</td>
             <td>Total items Taken</td>
         </tr>
-        @foreach($buyers as $buyer)
+        
         <tr>
             <td>{{$buyer->id}}</td>
             <td>{{$buyer->name}}</td>
-            <td>Total Diary Taken</td>
+            <td>{{$buyer->diaryCount()}}</td>
             <td>{{$buyer->penCount()}}</td>
-            <td>Total Eraser Taken</td>
-            <td>Total items Taken</td>
+            <td>{{$buyer->eraserCount()}}</td>
+            <td>{{$buyer->totalItems()}}</td>
         </tr>
-        @endforeach
     </table>
 @endsection 

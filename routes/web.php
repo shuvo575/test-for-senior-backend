@@ -17,4 +17,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('second-buyer-eloquent', 'SalesController@index');
+Route::get('second-buyer-eloquent', 'SalesController@eloquent_way');
