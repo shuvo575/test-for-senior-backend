@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function eloquent_way()
     {
 
@@ -53,9 +48,17 @@ class SalesController extends Controller
     public function no_eloquent_way(){
         $buyer = DB::select('
         SELECT b.*, (SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id) AS pen, (SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id) as eraser, (SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id) as diary, ((SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id)+(SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id)+(SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id)) as total  FROM buyers b ORDER BY total DESC LIMIT 1 OFFSET 1
-        ');
+        ')[0];
 
-        $buyer = $buyer[0];
         return view('second-buyer-no-eloquent', compact('buyer'));
     }
+
+    public function purchase_eloquent_way(){
+        $buyers = Buyer::all();
+        $buyers = $buyers->sortBy(function ($buyer) {
+            return $buyer->totalItems();
+        });
+        return view('purchase-list-eloquent', compact('buyers'));
+    }
+
 }
