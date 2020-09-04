@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get('second-buyer-eloquent', 'SalesController@eloquent_way');
+Route::get('second-buyer-no-eloquent', 'SalesController@no_eloquent_way');

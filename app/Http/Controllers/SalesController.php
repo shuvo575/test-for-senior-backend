@@ -6,6 +6,7 @@ use App\Buyer;
 use App\DiaryTaken;
 use App\EraserTaken;
 use App\PenTaken;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -47,5 +48,14 @@ class SalesController extends Controller
         $buyer = Buyer::find($buyer_id);
 
         return view('second-buyer-eloquent', compact('buyer'));
+    }
+
+    public function no_eloquent_way(){
+        $buyer = DB::select('
+        SELECT b.*, (SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id) AS pen, (SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id) as eraser, (SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id) as diary, ((SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id)+(SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id)+(SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id)) as total  FROM buyers b ORDER BY total DESC LIMIT 1 OFFSET 1
+        ');
+
+        $buyer = $buyer[0];
+        return view('second-buyer-no-eloquent', compact('buyer'));
     }
 }
