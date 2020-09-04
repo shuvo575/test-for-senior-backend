@@ -47,7 +47,15 @@ class SalesController extends Controller
 
     public function no_eloquent_way(){
         $buyer = DB::select('
-        SELECT b.*, (SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id) AS pen, (SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id) as eraser, (SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id) as diary, ((SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id)+(SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id)+(SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id)) as total  FROM buyers b ORDER BY total DESC LIMIT 1 OFFSET 1
+        SELECT b.*, (SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id) AS pen, 
+        (SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id) as eraser, 
+        (SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id) as diary, 
+        (
+            IFNULL((SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id),0)+
+            IFNULL((SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id),0)+
+            IFNULL((SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id),0)
+        ) as total  
+        FROM buyers b ORDER BY total DESC LIMIT 1 OFFSET 1
         ')[0];
 
         return view('second-buyer-no-eloquent', compact('buyer'));
@@ -59,6 +67,23 @@ class SalesController extends Controller
             return $buyer->totalItems();
         });
         return view('purchase-list-eloquent', compact('buyers'));
+    }
+
+    public function purchase_no_eloquent_way(){
+        $buyers = DB::select('
+        SELECT b.*, 
+        (SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id) AS pen, 
+        (SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id) as eraser, 
+        (SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id) as diary, 
+        (
+            IFNULL((SELECT SUM(amount) FROM pen_taken WHERE pen_taken.buyer_id = b.id),0)+
+            IFNULL((SELECT SUM(amount) FROM eraser_taken WHERE eraser_taken.buyer_id = b.id),0)+
+            IFNULL((SELECT SUM(amount) FROM diary_taken WHERE diary_taken.buyer_id = b.id),0)
+        ) as total  
+        FROM buyers b ORDER BY total
+        ');
+
+        return view('purchase-list-no-eloquent', compact('buyers'));
     }
 
 }
