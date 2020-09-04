@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('content')
-<h1>purchase list eloquent</h1>
+<h1>purchase list no eloquent</h1>
     <table>
         <tr>
             <td>Buyer id</td>
